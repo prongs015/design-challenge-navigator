@@ -1,11 +1,8 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import TreesIllustration from '@/components/TreesIllustration';
-
 const Index = () => {
-  return (
-    <div className="relative min-h-screen flex flex-col items-center">
+  return <div className="relative min-h-screen flex flex-col items-center">
       {/* Feature Tags */}
       <div className="relative w-full max-w-6xl mt-24 mb-16">
         <div className="absolute left-0 top-1/2 transform -translate-y-1/2 md:translate-y-0 md:top-0">
@@ -27,7 +24,7 @@ const Index = () => {
         </div>
         
         <div className="absolute left-4 md:left-20 bottom-0">
-          <div className="bg-green-200 text-green-900 px-6 py-3 rounded-full">
+          <div className="bg-green-200 text-green-900 py-3 rounded-full px-[23px] mx-[208px]">
             Voice-Enabled AI
           </div>
         </div>
@@ -40,7 +37,7 @@ const Index = () => {
       
       {/* Main Heading */}
       <div className="text-center mb-12 mt-8 px-4">
-        <h1 className="text-4xl md:text-6xl font-bold leading-tight tracking-tight">
+        <h1 className="text-4xl md:text-6xl leading-tight tracking-tight font-normal">
           Master Your Design<br />
           Whiteboard Challenges!
         </h1>
@@ -49,13 +46,11 @@ const Index = () => {
       {/* CTA Button */}
       <div className="mb-20">
         <Button asChild size="lg" className="bg-[#1A1A1A] hover:bg-black text-white rounded-full px-12 py-6 text-lg h-auto">
-          <Link to="/companies">
+          <Link to="/companies" className="py-[12px] px-[24px]">
             Start Practicing
           </Link>
         </Button>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;

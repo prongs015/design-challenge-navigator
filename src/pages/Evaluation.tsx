@@ -8,14 +8,14 @@ import { ArrowLeft, Home } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from "@/hooks/use-toast";
 import { supabase } from '@/integrations/supabase/client';
-import EvaluationResult from '@/components/EvaluationResult';
+import EvaluationResult, { EvaluationResult as EvaluationResultType } from '@/components/EvaluationResult';
 
 const Evaluation = () => {
   const { challengeId } = useParams<{ challengeId: string }>();
   const navigate = useNavigate();
   const { getChallengeById, setCurrentChallenge, currentChallenge } = useChallengeContext();
   const [isEvaluating, setIsEvaluating] = useState(false);
-  const [evaluationResult, setEvaluationResult] = useState(null);
+  const [evaluationResult, setEvaluationResult] = useState<EvaluationResultType | null>(null);
   const [error, setError] = useState<string | null>(null);
   
   useEffect(() => {
@@ -153,7 +153,11 @@ const Evaluation = () => {
               {evaluationResult && (
                 <div className="mt-8">
                   <h2 className="text-xl font-semibold mb-4">Evaluation Results</h2>
-                  <EvaluationResult evaluation={evaluationResult} />
+                  <EvaluationResult 
+                    result={evaluationResult}
+                    isLoading={isEvaluating}
+                    error={error || undefined}
+                  />
                 </div>
               )}
             </CardContent>

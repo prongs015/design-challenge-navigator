@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Role, useChallengeContext } from '@/context/ChallengeContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AlertCircle, Code, LucideIcon, Lightbulb, Briefcase } from 'lucide-react';
+import { Code, LucideIcon, Lightbulb, Briefcase } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface RoleCardProps {
@@ -18,17 +18,17 @@ const RoleCard = ({ title, description, icon: Icon, isSelected }: RoleCardProps)
       initial={{ opacity: 0.8, y: 5 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className={`p-4 rounded-xl transition-all duration-300 ${
+      className={`p-3 rounded-lg transition-all duration-300 ${
         isSelected ? 'bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 shadow-md' : 'bg-gray-50 border border-gray-100'
       }`}
     >
-      <div className="flex items-start gap-3">
-        <div className={`p-2 rounded-lg ${isSelected ? 'bg-primary/20 text-primary' : 'bg-gray-200 text-gray-500'}`}>
-          <Icon size={18} />
+      <div className="flex items-start gap-2">
+        <div className={`p-1.5 rounded-md ${isSelected ? 'bg-primary/20 text-primary' : 'bg-gray-200 text-gray-500'}`}>
+          <Icon size={16} />
         </div>
         <div>
-          <h3 className={`font-medium ${isSelected ? 'text-primary' : 'text-gray-700'}`}>{title}</h3>
-          <p className="text-sm text-gray-600 mt-1">{description}</p>
+          <h3 className={`font-medium text-sm ${isSelected ? 'text-primary' : 'text-gray-700'}`}>{title}</h3>
+          <p className="text-xs text-gray-600 mt-0.5">{description}</p>
         </div>
       </div>
     </motion.div>
@@ -46,7 +46,7 @@ const RoleSelector = () => {
   };
   
   return (
-    <div className="w-full max-w-md mx-auto space-y-4">
+    <div className="w-full space-y-3">
       <h3 className="font-medium text-sm uppercase tracking-wider text-gray-500 mb-1">Select Experience Level</h3>
       
       <Tabs defaultValue={selectedRole} onValueChange={handleRoleChange} className="w-full">
@@ -56,38 +56,28 @@ const RoleSelector = () => {
           <TabsTrigger value="lead" className="text-xs">Lead</TabsTrigger>
         </TabsList>
         
-        <div className="space-y-3 mt-3">
+        <div className="space-y-2 mt-2">
           <RoleCard 
             title="Junior Designer"
-            description="Focus on core UX principles and demonstrating problem-solving skills with simple solutions."
+            description="Focus on core UX principles and simple solutions."
             icon={Code}
             isSelected={selectedRole === 'junior'}
           />
           
           <RoleCard 
             title="Senior Designer"
-            description="Balance user needs with technical constraints and consider business impact of design decisions."
+            description="Balance user needs with technical constraints."
             icon={Lightbulb}
             isSelected={selectedRole === 'senior'}
           />
           
           <RoleCard 
             title="Lead Designer"
-            description="Strategic thinking, business awareness, and ability to lead cross-functional efforts."
+            description="Strategic thinking and business awareness."
             icon={Briefcase}
             isSelected={selectedRole === 'lead'}
           />
         </div>
-        
-        <TabsContent value="junior" className="mt-4 text-sm text-gray-600">
-          <p>Junior level focuses on core UX principles. Demonstrate your problem-solving process and ability to create simple, usable solutions.</p>
-        </TabsContent>
-        <TabsContent value="senior" className="mt-4 text-sm text-gray-600">
-          <p>Senior level requires balancing user needs with technical constraints and considering business impact of your design decisions.</p>
-        </TabsContent>
-        <TabsContent value="lead" className="mt-4 text-sm text-gray-600">
-          <p>Lead level requires strategic thinking, business awareness, and ability to lead cross-functional efforts. You'll need to balance user, business and technical constraints.</p>
-        </TabsContent>
       </Tabs>
     </div>
   );

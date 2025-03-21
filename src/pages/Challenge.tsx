@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import ChallengeCard from '@/components/ChallengeCard';
 import RoleSelector from '@/components/RoleSelector';
 import { Clock, ArrowLeft, CheckCircle, AlertCircle, HelpCircle, PenTool } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Challenge = () => {
   const { companyId } = useParams<{ companyId: string }>();
@@ -156,109 +157,115 @@ const Challenge = () => {
           )}
         </>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            <div className="flex items-center mb-2">
-              <Badge className="mr-2 bg-gray-100 text-gray-700 hover:bg-gray-200">
-                {currentChallenge.company}
-              </Badge>
-              <div className="flex items-center text-gray-500 text-sm">
-                <Clock size={14} className="mr-1" />
-                <span>{currentChallenge.duration} min</span>
-              </div>
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="flex items-center mb-4">
+            <Badge className="mr-2 bg-gray-100 text-gray-700 hover:bg-gray-200">
+              {currentChallenge.company}
+            </Badge>
+            <div className="flex items-center text-gray-500 text-sm">
+              <Clock size={14} className="mr-1" />
+              <span>{currentChallenge.duration} min</span>
             </div>
-            
-            <h1 className="text-3xl font-bold mb-4">{currentChallenge.title}</h1>
-            
-            <div className="flex flex-wrap gap-2 mb-6">
-              {currentChallenge.tags.map((tag) => (
-                <span key={tag} className="px-2 py-1 bg-gray-100 rounded-md text-xs text-gray-600">
-                  {tag}
-                </span>
-              ))}
-            </div>
-            
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
-              <h2 className="text-xl font-semibold mb-3">Challenge Scenario</h2>
-              <p className="text-gray-700 mb-6">{currentChallenge.scenario}</p>
-              
-              <h2 className="text-xl font-semibold mb-3">Requirements</h2>
-              <ul className="list-disc pl-5 space-y-2 mb-6">
-                {currentChallenge.requirements.map((req, index) => (
-                  <li key={index} className="text-gray-700">{req}</li>
-                ))}
-              </ul>
-              
-              {completed && (
-                <>
-                  <h2 className="text-xl font-semibold mb-3 flex items-center">
-                    <CheckCircle size={20} className="mr-2 text-green-500" />
-                    Role-Specific Guidance ({selectedRole} Designer)
-                  </h2>
-                  <ul className="list-disc pl-5 space-y-2">
-                    {getGuidance().map((item, index) => (
-                      <li key={index} className="text-gray-700">{item}</li>
+          </div>
+
+          <h1 className="text-3xl font-bold mb-6">{currentChallenge.title}</h1>
+          
+          <div className="flex flex-wrap gap-2 mb-6">
+            {currentChallenge.tags.map((tag) => (
+              <span key={tag} className="px-2 py-1 bg-gray-100 rounded-md text-xs text-gray-600">
+                {tag}
+              </span>
+            ))}
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Challenge Scenario - Now takes 2/3 of the space */}
+            <div className="lg:col-span-2">
+              <Card className="mb-6">
+                <CardContent className="p-6">
+                  <h2 className="text-xl font-semibold mb-3">Challenge Scenario</h2>
+                  <p className="text-gray-700 mb-6">{currentChallenge.scenario}</p>
+                  
+                  <h2 className="text-xl font-semibold mb-3">Requirements</h2>
+                  <ul className="list-disc pl-5 space-y-2 mb-6">
+                    {currentChallenge.requirements.map((req, index) => (
+                      <li key={index} className="text-gray-700">{req}</li>
                     ))}
                   </ul>
-                </>
-              )}
-            </div>
-            
-            {isTimerActive && !completed && (
-              <div className="mb-6">
+                  
+                  {completed && (
+                    <>
+                      <h2 className="text-xl font-semibold mb-3 flex items-center">
+                        <CheckCircle size={20} className="mr-2 text-green-500" />
+                        Role-Specific Guidance ({selectedRole} Designer)
+                      </h2>
+                      <ul className="list-disc pl-5 space-y-2">
+                        {getGuidance().map((item, index) => (
+                          <li key={index} className="text-gray-700">{item}</li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
+                </CardContent>
+              </Card>
+              
+              {isTimerActive && !completed && (
                 <Button
                   onClick={startWhiteboard}
-                  className="w-full bg-purple-600 hover:bg-purple-700 flex items-center justify-center"
+                  className="w-full bg-purple-600 hover:bg-purple-700 flex items-center justify-center mb-6"
                   size="lg"
                 >
                   <PenTool className="mr-2" size={18} />
                   Open Whiteboard
                 </Button>
-              </div>
-            )}
-          </div>
-          
-          <div className="lg:col-span-1">
-            <Card className="sticky top-20">
-              <CardContent className="p-6">
-                <div className="text-center mb-6">
-                  <div className="text-3xl font-mono mb-2">{formatTime(timeLeft)}</div>
-                  <p className="text-sm text-gray-500">Time Remaining</p>
-                </div>
-                
-                <div className="space-y-3 mb-6">
-                  {!isTimerActive && !completed ? (
-                    <Button onClick={startTimer} className="w-full bg-black text-white hover:bg-gray-800">
-                      Start Challenge
-                    </Button>
-                  ) : isTimerActive ? (
-                    <>
-                      <Button onClick={pauseTimer} variant="outline" className="w-full">
-                        Pause Timer
-                      </Button>
-                      <Button onClick={completeChallenge} className="w-full bg-green-600 hover:bg-green-700">
-                        Complete Challenge
-                      </Button>
-                    </>
-                  ) : (
-                    <Button onClick={resetTimer} variant="outline" className="w-full">
-                      Restart Challenge
-                    </Button>
-                  )}
+              )}
+            </div>
+            
+            {/* Timer and Role Selector - Now takes 1/3 of the space */}
+            <div className="lg:col-span-1">
+              <Card className="sticky top-20 mb-6">
+                <CardContent className="p-6">
+                  <div className="text-center mb-6">
+                    <div className="text-3xl font-mono mb-2">{formatTime(timeLeft)}</div>
+                    <p className="text-sm text-gray-500">Time Remaining</p>
+                  </div>
                   
-                  {completed && (
-                    <Button
-                      onClick={startWhiteboard}
-                      className="w-full bg-purple-600 hover:bg-purple-700 flex items-center justify-center"
-                    >
-                      <PenTool className="mr-2" size={16} />
-                      Open Whiteboard
-                    </Button>
-                  )}
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="space-y-3 mb-6">
+                    {!isTimerActive && !completed ? (
+                      <Button onClick={startTimer} className="w-full bg-black text-white hover:bg-gray-800">
+                        Start Challenge
+                      </Button>
+                    ) : isTimerActive ? (
+                      <>
+                        <Button onClick={pauseTimer} variant="outline" className="w-full">
+                          Pause Timer
+                        </Button>
+                        <Button onClick={completeChallenge} className="w-full bg-green-600 hover:bg-green-700">
+                          Complete Challenge
+                        </Button>
+                      </>
+                    ) : (
+                      <Button onClick={resetTimer} variant="outline" className="w-full">
+                        Restart Challenge
+                      </Button>
+                    )}
+                    
+                    {completed && (
+                      <Button
+                        onClick={startWhiteboard}
+                        className="w-full bg-purple-600 hover:bg-purple-700 flex items-center justify-center"
+                      >
+                        <PenTool className="mr-2" size={16} />
+                        Open Whiteboard
+                      </Button>
+                    )}
+                  </div>
+                  
+                  <div className="bg-gray-50 p-4 rounded-lg mb-5">
                     <h3 className="font-medium text-sm uppercase tracking-wider text-gray-500 mb-2">Tips</h3>
                     <ul className="space-y-2 text-sm">
                       <li className="flex items-start">
@@ -277,11 +284,11 @@ const Challenge = () => {
                   </div>
                   
                   <RoleSelector />
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           </div>
-        </div>
+        </motion.div>
       )}
     </div>
   );

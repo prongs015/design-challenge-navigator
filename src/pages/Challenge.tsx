@@ -1,13 +1,13 @@
 
 import { useEffect, useState } from 'react';
-import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
+import { useParams, useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { useChallengeContext, Challenge as ChallengeType } from '@/context/ChallengeContext';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import ChallengeCard from '@/components/ChallengeCard';
 import RoleSelector from '@/components/RoleSelector';
-import { Clock, ArrowLeft, CheckCircle, AlertCircle, HelpCircle } from 'lucide-react';
+import { Clock, ArrowLeft, CheckCircle, AlertCircle, HelpCircle, PenTool } from 'lucide-react';
 
 const Challenge = () => {
   const { companyId } = useParams<{ companyId: string }>();
@@ -89,6 +89,12 @@ const Challenge = () => {
 
   const goBack = () => {
     navigate(-1);
+  };
+
+  const startWhiteboard = () => {
+    if (currentChallenge) {
+      navigate(`/challenge/${companyId}/${currentChallenge.id}/whiteboard`);
+    }
   };
 
   const getGuidance = () => {
@@ -197,6 +203,19 @@ const Challenge = () => {
                 </>
               )}
             </div>
+            
+            {isTimerActive && !completed && (
+              <div className="mb-6">
+                <Button
+                  onClick={startWhiteboard}
+                  className="w-full bg-purple-600 hover:bg-purple-700 flex items-center justify-center"
+                  size="lg"
+                >
+                  <PenTool className="mr-2" size={18} />
+                  Open Whiteboard
+                </Button>
+              </div>
+            )}
           </div>
           
           <div className="lg:col-span-1">
@@ -224,6 +243,16 @@ const Challenge = () => {
                   ) : (
                     <Button onClick={resetTimer} variant="outline" className="w-full">
                       Restart Challenge
+                    </Button>
+                  )}
+                  
+                  {completed && (
+                    <Button
+                      onClick={startWhiteboard}
+                      className="w-full bg-purple-600 hover:bg-purple-700 flex items-center justify-center"
+                    >
+                      <PenTool className="mr-2" size={16} />
+                      Open Whiteboard
                     </Button>
                   )}
                 </div>

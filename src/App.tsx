@@ -11,6 +11,10 @@ import Challenge from "./pages/Challenge";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import Companies from "./pages/Companies";
+import Whiteboard from "./pages/Whiteboard";
+import Submit from "./pages/Submit";
+import Progress from "./pages/Progress";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
@@ -29,6 +33,10 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/challenge/:companyId" element={<Challenge />} />
+                <Route path="/challenge/:companyId/:challengeId/whiteboard" element={<Whiteboard />} />
+                <Route path="/challenge/:companyId/:challengeId/submit" element={<Submit />} />
+                <Route path="/companies" element={<Companies />} />
+                <Route path="/progress" element={<Progress />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="*" element={<NotFound />} />

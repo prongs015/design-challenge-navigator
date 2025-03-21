@@ -16,7 +16,6 @@ import Whiteboard from "./pages/Whiteboard";
 import Submit from "./pages/Submit";
 import Progress from "./pages/Progress";
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 
 const queryClient = new QueryClient();
 
@@ -42,7 +41,6 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
-            <Footer />
           </div>
         </BrowserRouter>
       </TooltipProvider>

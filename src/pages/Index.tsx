@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -151,55 +150,7 @@ const Index = () => {
         </div>
       </div>
       
-      {/* Testimonials */}
-      <div className="mb-16">
-        <h2 className="text-2xl font-bold mb-6 text-center">Why Designers Love Us</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <Card className="bg-gray-50 border-0">
-            <CardContent className="pt-6">
-              <p className="italic text-gray-600 mb-4">
-                "This platform helped me nail my design interview at Meta. The challenges are so realistic!"
-              </p>
-              <p className="font-semibold">- Sarah K.</p>
-              <p className="text-sm text-gray-500">Senior Product Designer</p>
-            </CardContent>
-          </Card>
-          
-          <Card className="bg-gray-50 border-0">
-            <CardContent className="pt-6">
-              <p className="italic text-gray-600 mb-4">
-                "The role-specific feedback helped me understand what's expected at different career levels."
-              </p>
-              <p className="font-semibold">- Michael T.</p>
-              <p className="text-sm text-gray-500">UX Designer</p>
-            </CardContent>
-          </Card>
-          
-          <Card className="bg-gray-50 border-0">
-            <CardContent className="pt-6">
-              <p className="italic text-gray-600 mb-4">
-                "The whiteboarding tool is intuitive and perfect for practicing design challenges."
-              </p>
-              <p className="font-semibold">- Ava P.</p>
-              <p className="text-sm text-gray-500">Product Designer</p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-      
-      {/* CTA Section */}
-      <div className="bg-purple-50 rounded-xl p-8 text-center max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold mb-4">Ready to ace your next design interview?</h2>
-        <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-          Start practicing with real-world challenges and track your progress over time.
-        </p>
-        <Button asChild size="lg">
-          <Link to="/companies">
-            Get Started Now
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Link>
-        </Button>
-      </div>
+      {/* Removed the testimonials and CTA sections as requested */}
     </div>
   );
 };

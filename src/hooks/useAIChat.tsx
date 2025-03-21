@@ -17,6 +17,7 @@ export const useAIChat = (challenge: Challenge) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [suggestedPrompts, setSuggestedPrompts] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Pre-defined prompts based on different whiteboarding activities
@@ -54,12 +55,24 @@ export const useAIChat = (challenge: Challenge) => {
     if (!messageText.trim()) return;
     
     setIsLoading(true);
+    setError(null); // Clear any previous errors
     
     // Add user message to chat
     const userMessage = { role: 'user' as const, content: messageText };
     setMessages(prev => [...prev, userMessage]);
     
     try {
+      console.log("Sending message to chat-assistant function:", {
+        message: messageText,
+        challenge: {
+          title: challenge.title,
+          company: challenge.company,
+          description: challenge.description,
+          requirements: challenge.requirements
+        },
+        historyLength: messages.length
+      });
+      
       // Send message to Supabase Edge Function
       const { data, error } = await supabase.functions.invoke('chat-assistant', {
         body: { 
@@ -79,9 +92,21 @@ export const useAIChat = (challenge: Challenge) => {
         throw new Error(error.message || 'Failed to get a response from the AI assistant');
       }
       
-      if (!data || !data.response) {
-        console.error('Invalid response from chat-assistant function:', data);
-        throw new Error('Invalid response from the AI assistant');
+      console.log("Response from chat-assistant function:", data);
+      
+      if (!data) {
+        console.error('Empty response from chat-assistant function');
+        throw new Error('Empty response from the AI assistant');
+      }
+      
+      if (data.error) {
+        console.error('Error reported by chat-assistant function:', data.error);
+        throw new Error(data.error.details || data.error);
+      }
+      
+      if (!data.response) {
+        console.error('Invalid response structure from chat-assistant function:', data);
+        throw new Error('Invalid response from the AI assistant (missing response field)');
       }
       
       // Add AI response to chat
@@ -95,9 +120,13 @@ export const useAIChat = (challenge: Challenge) => {
       
     } catch (error) {
       console.error('Error calling AI assistant:', error);
+      
+      // Set error state
+      setError(error.message || "Failed to connect to AI assistant");
+      
       toast({
-        title: "Error",
-        description: "Failed to get a response from the AI assistant. Please try again.",
+        title: "AI Assistant Error",
+        description: error.message || "Failed to get a response from the AI assistant. Please try again.",
         variant: "destructive"
       });
       
@@ -146,6 +175,7 @@ export const useAIChat = (challenge: Challenge) => {
     isLoading,
     suggestedPrompts,
     sendMessage,
-    messagesEndRef
+    messagesEndRef,
+    error
   };
 };

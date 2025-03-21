@@ -1,11 +1,12 @@
 
 import { Avatar } from "@/components/ui/avatar";
-import { Bot } from 'lucide-react';
+import { Bot, AlertCircle } from 'lucide-react';
 import { Challenge } from '@/context/ChallengeContext';
 import { useAIChat } from '@/hooks/useAIChat';
 import ChatMessage from './chat/ChatMessage';
 import SuggestedPrompts from './chat/SuggestedPrompts';
 import ChatInput from './chat/ChatInput';
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const AIChat = ({ challenge }: { challenge: Challenge }) => {
   const { 
@@ -13,7 +14,8 @@ const AIChat = ({ challenge }: { challenge: Challenge }) => {
     isLoading, 
     suggestedPrompts, 
     sendMessage, 
-    messagesEndRef 
+    messagesEndRef,
+    error
   } = useAIChat(challenge);
 
   return (
@@ -29,6 +31,15 @@ const AIChat = ({ challenge }: { challenge: Challenge }) => {
       </div>
       
       <div className="flex-grow overflow-y-auto p-4 space-y-4">
+        {error && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              {error}
+            </AlertDescription>
+          </Alert>
+        )}
+        
         {messages.map((message, index) => (
           <ChatMessage 
             key={index}

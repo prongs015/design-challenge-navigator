@@ -1,7 +1,7 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Sheet,
   SheetContent,
@@ -22,9 +22,7 @@ interface SubmissionFormProps {
 }
 
 const SubmissionForm = ({ challengeId, onComplete }: SubmissionFormProps) => {
-  const [reflections, setReflections] = useState('');
-  const [challenges, setChallenges] = useState('');
-  const [selectedTab, setSelectedTab] = useState('reflections');
+  const [solution, setSolution] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [evaluationResult, setEvaluationResult] = useState<EvaluationResultType | null>(null);
@@ -68,10 +66,10 @@ const SubmissionForm = ({ challengeId, onComplete }: SubmissionFormProps) => {
   };
 
   const handleEvaluate = async () => {
-    if (!reflections && !challenges) {
+    if (!solution) {
       toast({
         title: "Missing content",
-        description: "Please add your reflections or challenges before evaluating",
+        description: "Please add your solution before evaluating",
         variant: "destructive",
       });
       return;
@@ -86,12 +84,6 @@ const SubmissionForm = ({ challengeId, onComplete }: SubmissionFormProps) => {
       if (!challenge) {
         throw new Error("Challenge not found");
       }
-
-      const solution = `
-        Reflections: ${reflections}
-        
-        Challenges & Learnings: ${challenges}
-      `;
 
       const { data, error } = await supabase.functions.invoke('evaluate-solution', {
         body: {
@@ -131,36 +123,17 @@ const SubmissionForm = ({ challengeId, onComplete }: SubmissionFormProps) => {
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
         <h2 className="text-xl font-semibold mb-4">Complete Your Challenge</h2>
         
-        <Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full">
-          <TabsList className="grid grid-cols-2 w-full">
-            <TabsTrigger value="reflections">Reflections</TabsTrigger>
-            <TabsTrigger value="challenges">Challenges & Learnings</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="reflections" className="mt-4">
-            <p className="text-sm text-gray-600 mb-2">
-              Reflect on your design process and solution. What went well? How does your solution meet the requirements?
-            </p>
-            <Textarea
-              value={reflections}
-              onChange={(e) => setReflections(e.target.value)}
-              placeholder="Share your reflections..."
-              className="min-h-[150px]"
-            />
-          </TabsContent>
-          
-          <TabsContent value="challenges" className="mt-4">
-            <p className="text-sm text-gray-600 mb-2">
-              What challenges did you face? What would you do differently next time? What did you learn?
-            </p>
-            <Textarea
-              value={challenges}
-              onChange={(e) => setChallenges(e.target.value)}
-              placeholder="Share your challenges and learnings..."
-              className="min-h-[150px]"
-            />
-          </TabsContent>
-        </Tabs>
+        <div className="mb-4">
+          <p className="text-sm text-gray-600 mb-2">
+            Describe your solution in detail. How does it meet the requirements?
+          </p>
+          <Textarea
+            value={solution}
+            onChange={(e) => setSolution(e.target.value)}
+            placeholder="Share your solution..."
+            className="min-h-[150px]"
+          />
+        </div>
 
         <div className="mt-6">
           <Button 
@@ -170,7 +143,7 @@ const SubmissionForm = ({ challengeId, onComplete }: SubmissionFormProps) => {
             className="flex items-center"
           >
             <Award className="w-4 h-4 mr-2" />
-            {isEvaluating ? 'Evaluating...' : 'Evaluate My Solution'}
+            {isEvaluating ? 'Evaluating...' : 'Evaluate with Gemini'}
           </Button>
         </div>
       </div>
@@ -210,14 +183,9 @@ const SubmissionForm = ({ challengeId, onComplete }: SubmissionFormProps) => {
                 </SheetDescription>
               </SheetHeader>
               <div className="py-4">
-                <h3 className="font-medium mb-2">Reflections</h3>
-                <p className="text-sm text-gray-600 mb-4">
-                  {reflections || "No reflections added yet."}
-                </p>
-                
-                <h3 className="font-medium mb-2">Challenges & Learnings</h3>
+                <h3 className="font-medium mb-2">Solution</h3>
                 <p className="text-sm text-gray-600">
-                  {challenges || "No challenges or learnings added yet."}
+                  {solution || "No solution added yet."}
                 </p>
               </div>
             </SheetContent>

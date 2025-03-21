@@ -38,7 +38,7 @@ serve(async (req) => {
       Description: ${challenge.description}
       Requirements: ${JSON.stringify(challenge.requirements)}
       
-      User's solution/reflection: ${solution}
+      User's solution: ${solution}
       
       Please evaluate this solution on a scale of 1-100 based on the following criteria:
       1. Problem Understanding (25 points) - How well did they understand the core problem?

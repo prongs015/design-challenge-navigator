@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import { useParams, useSearchParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { useChallengeContext, Challenge as ChallengeType } from '@/context/ChallengeContext';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -182,12 +182,20 @@ const Challenge = () => {
             ))}
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Challenge Scenario - Now takes 2/3 of the space */}
-            <div className="lg:col-span-2">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Challenge Scenario - Now takes 8/12 of the space */}
+            <div className="lg:col-span-8">
               <Card className="mb-6">
                 <CardContent className="p-6">
-                  <h2 className="text-xl font-semibold mb-3">Challenge Scenario</h2>
+                  <div className="flex justify-between items-start mb-6">
+                    <h2 className="text-xl font-semibold">Challenge Scenario</h2>
+                    
+                    {/* Embed RoleSelector in a smaller card within the Challenge card */}
+                    <div className="w-56">
+                      <RoleSelector />
+                    </div>
+                  </div>
+                  
                   <p className="text-gray-700 mb-6">{currentChallenge.scenario}</p>
                   
                   <h2 className="text-xl font-semibold mb-3">Requirements</h2>
@@ -225,8 +233,8 @@ const Challenge = () => {
               )}
             </div>
             
-            {/* Timer and Role Selector - Now takes 1/3 of the space */}
-            <div className="lg:col-span-1">
+            {/* Timer - Now takes 4/12 of the space */}
+            <div className="lg:col-span-4">
               <Card className="sticky top-20 mb-6">
                 <CardContent className="p-6">
                   <div className="text-center mb-6">
@@ -265,7 +273,7 @@ const Challenge = () => {
                     )}
                   </div>
                   
-                  <div className="bg-gray-50 p-4 rounded-lg mb-5">
+                  <div className="bg-gray-50 p-4 rounded-lg">
                     <h3 className="font-medium text-sm uppercase tracking-wider text-gray-500 mb-2">Tips</h3>
                     <ul className="space-y-2 text-sm">
                       <li className="flex items-start">
@@ -282,8 +290,6 @@ const Challenge = () => {
                       </li>
                     </ul>
                   </div>
-                  
-                  <RoleSelector />
                 </CardContent>
               </Card>
             </div>

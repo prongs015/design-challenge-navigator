@@ -6,27 +6,25 @@ const Index = () => {
       {/* Feature Tags */}
       <div className="relative w-full max-w-6xl mt-24 mb-16">
         <div className="absolute left-0 top-1/2 transform -translate-y-1/2 md:translate-y-0 md:top-0">
-          <div className="bg-pink-200 text-pink-900 px-6 py-3 rounded-full">
+          <div className="bg-pink-200 text-pink-900 px-6 py-3 rounded-full my-[97px] mx-[39px]">
             Live Conversational Feedback
           </div>
         </div>
         
         <div className="absolute right-0 top-0">
-          <div className="bg-red-200 text-red-900 px-6 py-3 rounded-full">
+          <div className="bg-red-200 text-red-900 px-6 py-3 rounded-full mx-[81px] my-[86px]">
             Adaptive Challenge Levels
           </div>
         </div>
         
         <div className="absolute right-4 top-1/3 md:right-20 lg:right-40">
-          <div className="bg-blue-200 text-blue-900 px-6 py-3 rounded-full">
+          <div className="bg-blue-200 text-blue-900 px-6 py-3 rounded-full mx-[240px]">
             Industry-Specific Scenarios
           </div>
         </div>
         
         <div className="absolute left-4 md:left-20 bottom-0">
-          <div className="bg-green-200 text-green-900 py-3 rounded-full px-[23px] mx-[208px]">
-            Voice-Enabled AI
-          </div>
+          
         </div>
         
         {/* Center Trees Illustration */}
@@ -37,7 +35,7 @@ const Index = () => {
       
       {/* Main Heading */}
       <div className="text-center mb-12 mt-8 px-4">
-        <h1 className="text-4xl md:text-6xl leading-tight tracking-tight font-normal">
+        <h1 className="text-4xl md:text-6xl leading-tight tracking-tight font-normal my-0">
           Master Your Design<br />
           Whiteboard Challenges!
         </h1>

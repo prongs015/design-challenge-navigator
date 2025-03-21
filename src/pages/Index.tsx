@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -11,50 +12,56 @@ import {
 import { useChallengeContext } from '@/context/ChallengeContext';
 import ChallengeCard from '@/components/ChallengeCard';
 import {
-  Briefcase,
   PenTool,
-  LayoutDashboard,
-  Clock,
   ArrowRight
 } from 'lucide-react';
 
 const Index = () => {
   const { challenges } = useChallengeContext();
-  const [viewMode, setViewMode] = useState<'featured' | 'companies'>('featured');
   
-  // Get unique companies from challenges
-  const companies = [...new Set(challenges.map(challenge => challenge.companyId))];
-  
-  // Get featured challenges (for the purposes of this demo, just take a couple)
-  const featuredChallenges = challenges.slice(0, 3);
+  // Get featured challenges (for the purposes of this demo, just take first few)
+  const featuredChallenges = challenges.slice(0, 6);
 
   return (
     <div className="container mx-auto px-4 py-12">
       {/* Hero Section */}
       <div className="text-center mb-16 max-w-3xl mx-auto">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl mb-6">
-          Practice Product Design Interviews Like Never Before
+          Practice Whiteboarding with AI Feedback
         </h1>
         <p className="text-lg text-gray-600 mb-8">
-          Sharpen your design skills with real-world challenges from top tech companies.
-          Practice at your own pace and get role-specific feedback.
+          Select a design challenge, work on the whiteboard, and get AI-powered evaluation of your solutions.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button asChild size="lg" className="flex items-center">
-            <Link to="/companies">
-              Find a Challenge
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
-          <Button asChild variant="outline" size="lg">
-            <Link to="/progress">
-              My Progress
-            </Link>
-          </Button>
-        </div>
       </div>
       
-      {/* I've removed the Features Section as requested */}
+      {/* Challenges Grid */}
+      <h2 className="text-2xl font-bold mb-6">Select a Challenge</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        {featuredChallenges.map((challenge) => (
+          <Card key={challenge.id} className="overflow-hidden hover:shadow-md transition-shadow">
+            <CardHeader>
+              <CardTitle>{challenge.title}</CardTitle>
+              <CardDescription>{challenge.company}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 mb-4 line-clamp-2">{challenge.description}</p>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {challenge.tags.slice(0, 3).map((tag) => (
+                  <span key={tag} className="px-2 py-1 bg-gray-100 rounded-md text-xs text-gray-600">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <Button asChild className="w-full">
+                <Link to={`/whiteboard/${challenge.id}`} className="flex items-center justify-center">
+                  <PenTool className="mr-2 h-4 w-4" />
+                  Start Whiteboarding
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 };

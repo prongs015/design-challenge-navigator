@@ -7,15 +7,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ChallengeProvider } from "./context/ChallengeContext";
 
 import Index from "./pages/Index";
-import Challenge from "./pages/Challenge";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import NotFound from "./pages/NotFound";
-import Companies from "./pages/Companies";
 import Whiteboard from "./pages/Whiteboard";
-import Submit from "./pages/Submit";
-import Progress from "./pages/Progress";
+import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
+import Evaluation from "./pages/Evaluation";
 
 const queryClient = new QueryClient();
 
@@ -31,13 +26,8 @@ const App = () => (
             <main className="flex-grow">
               <Routes>
                 <Route path="/" element={<Index />} />
-                <Route path="/challenge/:companyId" element={<Challenge />} />
-                <Route path="/challenge/:companyId/:challengeId/whiteboard" element={<Whiteboard />} />
-                <Route path="/challenge/:companyId/:challengeId/submit" element={<Submit />} />
-                <Route path="/companies" element={<Companies />} />
-                <Route path="/progress" element={<Progress />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
+                <Route path="/whiteboard/:challengeId" element={<Whiteboard />} />
+                <Route path="/evaluation/:challengeId" element={<Evaluation />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>

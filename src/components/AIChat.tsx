@@ -36,6 +36,15 @@ const AIChat = ({ challenge }: { challenge: Challenge }) => {
             content={message.content}
           />
         ))}
+        
+        {isLoading && (
+          <ChatMessage 
+            role="assistant"
+            content=""
+            isLoading={true}
+          />
+        )}
+        
         <div ref={messagesEndRef} />
       </div>
       

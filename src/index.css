@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 210 40% 98%;
     --foreground: 240 10% 3.9%;
 
     --card: 0 0% 100%;
@@ -16,7 +16,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    --primary: 240 5.9% 10%;
+    --primary: 262 83% 58%;
     --primary-foreground: 0 0% 98%;
 
     --secondary: 240 4.8% 95.9%;
@@ -25,7 +25,7 @@
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
 
-    --accent: 240 4.8% 95.9%;
+    --accent: 262 83% 58%;
     --accent-foreground: 240 5.9% 10%;
 
     --destructive: 0 84.2% 60.2%;
@@ -33,9 +33,9 @@
 
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 240 10% 3.9%;
+    --ring: 262 83% 58%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
   }
 
   .dark {
@@ -48,7 +48,7 @@
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 0 0% 98%;
+    --primary: 262 83% 58%;
     --primary-foreground: 240 5.9% 10%;
 
     --secondary: 240 3.7% 15.9%;
@@ -57,7 +57,7 @@
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
 
-    --accent: 240 3.7% 15.9%;
+    --accent: 262 83% 58%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -77,8 +77,11 @@
     @apply scroll-smooth;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight;
   }
 }
 
@@ -88,7 +91,7 @@
   }
   
   .card-hover {
-    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+    @apply transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1;
   }
   
   .feature-tag {
@@ -111,8 +114,18 @@
     @apply bg-tag-purple text-tag-purple-text;
   }
   
+  .gradient-btn {
+    @apply relative overflow-hidden rounded-full font-medium transition-all duration-200 
+    before:absolute before:inset-0 before:bg-gradient-to-r before:from-gradient-start before:to-gradient-end before:opacity-100
+    hover:before:opacity-90 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2;
+  }
+  
+  .gradient-btn span {
+    @apply relative z-10 text-white;
+  }
+  
   .btn-primary {
-    @apply bg-black text-white rounded-full px-6 py-3 font-medium transition-all duration-200 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2;
+    @apply gradient-btn px-6 py-3 shadow-sm;
   }
   
   .btn-outline {
@@ -120,7 +133,7 @@
   }
   
   .nav-link {
-    @apply text-gray-800 hover:text-black transition-colors duration-200 px-3 py-2;
+    @apply text-gray-800 hover:text-primary transition-colors duration-200 px-3 py-2 font-medium;
   }
   
   .hero-heading {
@@ -129,5 +142,13 @@
   
   .section-heading {
     @apply text-3xl md:text-4xl font-bold tracking-tight;
+  }
+  
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-gradient-start via-gradient-middle to-gradient-end;
+  }
+  
+  .card-gradient {
+    @apply bg-gradient-to-br from-white to-gray-50 hover:from-gray-50 hover:to-white transition-all duration-300;
   }
 }

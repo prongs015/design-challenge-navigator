@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { ArrowLeft, ChevronRight } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
+import { motion } from 'framer-motion';
 
 const Submit = () => {
   const { companyId, challengeId } = useParams<{ companyId: string; challengeId: string }>();
@@ -43,13 +44,24 @@ const Submit = () => {
   if (!currentChallenge) {
     return (
       <div className="container mx-auto px-4 py-12 text-center">
-        <p>Loading challenge...</p>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <p className="text-lg">Loading challenge...</p>
+        </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+      className="container mx-auto px-4 py-6"
+    >
       <div className="mb-6">
         <Breadcrumb>
           <BreadcrumbList>
@@ -88,12 +100,12 @@ const Submit = () => {
             variant="ghost"
             size="sm"
             onClick={() => navigate(`/challenge/${companyId}/${challengeId}/whiteboard`)}
-            className="mb-2"
+            className="mb-2 group"
           >
-            <ArrowLeft className="w-4 h-4 mr-2" />
+            <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
             Back to Whiteboard
           </Button>
-          <h1 className="text-2xl font-bold">{currentChallenge.title}</h1>
+          <h1 className="text-2xl font-bold gradient-text">{currentChallenge.title}</h1>
           <p className="text-gray-600">{currentChallenge.company} - Submit Solution</p>
         </div>
       </div>
@@ -107,15 +119,15 @@ const Submit = () => {
         </div>
         
         <div className="lg:col-span-1">
-          <Card>
+          <Card gradient={true} className="animate-fadeIn">
             <CardContent className="p-6 space-y-6">
               <div>
-                <h3 className="text-lg font-medium mb-2">Challenge Summary</h3>
+                <h3 className="text-lg font-medium mb-2 gradient-text">Challenge Summary</h3>
                 <p className="text-sm text-gray-600">{currentChallenge.description}</p>
               </div>
               
               <div>
-                <h3 className="text-lg font-medium mb-2">Key Requirements</h3>
+                <h3 className="text-lg font-medium mb-2 gradient-text">Key Requirements</h3>
                 <ul className="list-disc pl-5 space-y-1">
                   {currentChallenge.requirements.map((req, index) => (
                     <li key={index} className="text-sm text-gray-600">{req}</li>
@@ -124,7 +136,7 @@ const Submit = () => {
               </div>
               
               <div className="pt-4 border-t">
-                <h3 className="text-lg font-medium mb-2">What's Next?</h3>
+                <h3 className="text-lg font-medium mb-2 gradient-text">What's Next?</h3>
                 <p className="text-sm text-gray-600 mb-2">
                   After submission, your challenge will be recorded and you can:
                 </p>
@@ -138,7 +150,7 @@ const Submit = () => {
           </Card>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

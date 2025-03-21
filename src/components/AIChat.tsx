@@ -15,7 +15,8 @@ const AIChat = ({ challenge }: { challenge: Challenge }) => {
     suggestedPrompts, 
     sendMessage, 
     messagesEndRef,
-    error
+    error,
+    retryConnection
   } = useAIChat(challenge);
 
   return (
@@ -33,9 +34,15 @@ const AIChat = ({ challenge }: { challenge: Challenge }) => {
       <div className="flex-grow overflow-y-auto p-4 space-y-4">
         {error && (
           <Alert variant="destructive" className="mb-4">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>
-              {error}
+            <AlertCircle className="h-4 w-4 mr-2" />
+            <AlertDescription className="flex flex-col gap-2">
+              <p>{error}</p>
+              <button 
+                onClick={retryConnection} 
+                className="text-xs underline text-white hover:text-gray-200 self-start"
+              >
+                Retry connection
+              </button>
             </AlertDescription>
           </Alert>
         )}

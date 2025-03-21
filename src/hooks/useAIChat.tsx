@@ -74,7 +74,7 @@ export const useAIChat = (challenge: Challenge) => {
       });
       
       // Send message to Supabase Edge Function
-      const { data, error } = await supabase.functions.invoke('chat-assistant', {
+      const { data, error: functionError } = await supabase.functions.invoke('chat-assistant', {
         body: { 
           message: messageText,
           challenge: {
@@ -87,9 +87,9 @@ export const useAIChat = (challenge: Challenge) => {
         }
       });
       
-      if (error) {
-        console.error('Error from chat-assistant function:', error);
-        throw new Error(error.message || 'Failed to get a response from the AI assistant');
+      if (functionError) {
+        console.error('Error from chat-assistant function:', functionError);
+        throw new Error(`Function error: ${functionError.message}` || 'Failed to get a response from the AI assistant');
       }
       
       console.log("Response from chat-assistant function:", data);
@@ -101,7 +101,11 @@ export const useAIChat = (challenge: Challenge) => {
       
       if (data.error) {
         console.error('Error reported by chat-assistant function:', data.error);
-        throw new Error(data.error.details || data.error);
+        let errorMessage = data.error;
+        if (data.details) {
+          errorMessage += `: ${data.details}`;
+        }
+        throw new Error(errorMessage);
       }
       
       if (!data.response) {
@@ -121,8 +125,20 @@ export const useAIChat = (challenge: Challenge) => {
     } catch (error) {
       console.error('Error calling AI assistant:', error);
       
-      // Set error state
-      setError(error.message || "Failed to connect to AI assistant");
+      // Set error state with more detailed message
+      let errorMessage = 'Failed to connect to AI assistant';
+      
+      if (error.message) {
+        if (error.message.includes('API key')) {
+          errorMessage = 'API key issue: The Gemini API key might be invalid or missing';
+        } else if (error.message.includes('Gemini AI error')) {
+          errorMessage = error.message;
+        } else {
+          errorMessage = `Error: ${error.message}`;
+        }
+      }
+      
+      setError(errorMessage);
       
       toast({
         title: "AI Assistant Error",
@@ -138,6 +154,14 @@ export const useAIChat = (challenge: Challenge) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const retryConnection = () => {
+    // Clear the error state
+    setError(null);
+    
+    // Send a simple test message to check the connection
+    sendMessage("Can you help me with this challenge?");
   };
 
   const updateSuggestedPrompts = (lastResponse: string) => {
@@ -176,6 +200,7 @@ export const useAIChat = (challenge: Challenge) => {
     suggestedPrompts,
     sendMessage,
     messagesEndRef,
-    error
+    error,
+    retryConnection
   };
 };

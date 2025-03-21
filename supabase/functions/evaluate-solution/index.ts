@@ -7,7 +7,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+const geminiApiKey = Deno.env.get('GEMINI_API_KEY');
 
 serve(async (req) => {
   // Handle CORS preflight requests
@@ -18,8 +18,8 @@ serve(async (req) => {
   try {
     const { solution, challenge } = await req.json();
 
-    if (!openAIApiKey) {
-      throw new Error('OpenAI API key is not configured');
+    if (!geminiApiKey) {
+      throw new Error('Gemini API key is not configured');
     }
 
     if (!solution || !challenge) {
@@ -64,25 +64,30 @@ serve(async (req) => {
       }
     `;
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    // Call Gemini API
+    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${openAIApiKey}`,
         'Content-Type': 'application/json',
+        'x-goog-api-key': geminiApiKey
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [
-          { role: 'system', content: 'You are an expert design evaluator that provides detailed, constructive feedback.' },
-          { role: 'user', content: prompt }
+        contents: [
+          {
+            role: "user",
+            parts: [{ text: prompt }]
+          }
         ],
-        temperature: 0.7,
-      }),
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 2048,
+        }
+      })
     });
 
     const data = await response.json();
     
-    if (!data.choices || data.choices.length === 0) {
+    if (!data.candidates || data.candidates.length === 0) {
       console.error("Unexpected API response:", data);
       throw new Error('Failed to get evaluation from AI');
     }
@@ -90,11 +95,16 @@ serve(async (req) => {
     let evaluation;
     try {
       // Parse the AI response as JSON
-      const content = data.choices[0].message.content;
-      evaluation = JSON.parse(content);
+      const content = data.candidates[0].content.parts[0].text;
+      // Find the JSON object in the response
+      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        throw new Error('Could not extract JSON from the response');
+      }
+      evaluation = JSON.parse(jsonMatch[0]);
     } catch (e) {
       console.error("Failed to parse AI response as JSON:", e);
-      console.log("Raw response:", data.choices[0].message.content);
+      console.log("Raw response:", data.candidates[0].content.parts[0].text);
       throw new Error('Failed to parse evaluation results');
     }
 

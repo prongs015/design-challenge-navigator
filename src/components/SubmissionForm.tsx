@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -108,7 +107,7 @@ const SubmissionForm = ({ challengeId, onComplete }: SubmissionFormProps) => {
       setEvaluationResult(data as EvaluationResultType);
       toast({
         title: "Evaluation complete",
-        description: "Your solution has been evaluated by AI",
+        description: "Your solution has been evaluated by Gemini AI",
       });
     } catch (error) {
       console.error("Evaluation error:", error);

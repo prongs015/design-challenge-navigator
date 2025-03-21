@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useChallengeContext } from '@/context/ChallengeContext';
@@ -46,7 +45,7 @@ const Whiteboard = () => {
     // For now just navigate to submit page with a note
     toast({
       title: "Submit your solution first",
-      description: "Please submit your solution with written reflections for evaluation",
+      description: "Please submit your solution with written reflections for Gemini AI evaluation",
     });
     navigate(`/challenge/${companyId}/${challengeId}/submit`);
   };
@@ -119,7 +118,7 @@ const Whiteboard = () => {
           >
             <span className="flex items-center">
               <Award className="mr-2 w-4 h-4" />
-              Evaluate
+              Evaluate with Gemini
             </span>
           </Button>
           

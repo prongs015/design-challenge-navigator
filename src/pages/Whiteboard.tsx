@@ -11,8 +11,9 @@ import {
   BreadcrumbList,
   BreadcrumbPage
 } from "@/components/ui/breadcrumb";
-import { ArrowLeft, ChevronRight, Send } from 'lucide-react';
+import { ArrowLeft, ChevronRight, Send, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { toast } from "@/hooks/use-toast";
 
 const Whiteboard = () => {
   const { companyId, challengeId } = useParams<{ companyId: string; challengeId: string }>();
@@ -37,6 +38,16 @@ const Whiteboard = () => {
   }, [challengeId, getChallengeById, setCurrentChallenge, navigate]);
   
   const handleSubmit = () => {
+    navigate(`/challenge/${companyId}/${challengeId}/submit`);
+  };
+
+  const handleEvaluateDirectly = () => {
+    // Here we'd capture the whiteboard state and send it for evaluation
+    // For now just navigate to submit page with a note
+    toast({
+      title: "Submit your solution first",
+      description: "Please submit your solution with written reflections for evaluation",
+    });
     navigate(`/challenge/${companyId}/${challengeId}/submit`);
   };
 
@@ -100,17 +111,30 @@ const Whiteboard = () => {
           <p className="text-gray-600">{currentChallenge.company} - Whiteboarding</p>
         </div>
         
-        <Button 
-          variant="gradient" 
-          rounded="full"
-          onClick={handleSubmit}
-          className="group"
-        >
-          <span className="flex items-center">
-            Submit Solution
-            <Send className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </span>
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            className="group"
+            onClick={handleEvaluateDirectly}
+          >
+            <span className="flex items-center">
+              <Award className="mr-2 w-4 h-4" />
+              Evaluate
+            </span>
+          </Button>
+          
+          <Button 
+            variant="gradient" 
+            rounded="full"
+            onClick={handleSubmit}
+            className="group"
+          >
+            <span className="flex items-center">
+              Submit Solution
+              <Send className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </span>
+          </Button>
+        </div>
       </div>
       
       <div className="bg-white border rounded-xl shadow-soft overflow-hidden h-[calc(100vh-240px)] min-h-[500px]">

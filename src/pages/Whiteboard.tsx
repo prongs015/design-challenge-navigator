@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useChallengeContext } from '@/context/ChallengeContext';
 import WhiteboardCanvas from '@/components/WhiteboardCanvas';
@@ -10,14 +11,16 @@ import {
   BreadcrumbList,
   BreadcrumbPage
 } from "@/components/ui/breadcrumb";
-import { ArrowLeft, ChevronRight, Send, Award } from 'lucide-react';
+import { ArrowLeft, ChevronRight, Send, Award, MessageSquare } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from "@/hooks/use-toast";
+import AIChat from '@/components/AIChat';
 
 const Whiteboard = () => {
   const { companyId, challengeId } = useParams<{ companyId: string; challengeId: string }>();
   const navigate = useNavigate();
   const { getChallengeById, setCurrentChallenge, currentChallenge } = useChallengeContext();
+  const [isChatOpen, setIsChatOpen] = useState(false);
   
   useEffect(() => {
     if (challengeId) {
@@ -45,9 +48,13 @@ const Whiteboard = () => {
     // For now just navigate to submit page with a note
     toast({
       title: "Submit your solution first",
-      description: "Please submit your solution with written reflections for Gemini AI evaluation",
+      description: "Please submit your solution for Gemini AI evaluation",
     });
     navigate(`/challenge/${companyId}/${challengeId}/submit`);
+  };
+
+  const toggleChat = () => {
+    setIsChatOpen(!isChatOpen);
   };
 
   if (!currentChallenge) {
@@ -112,6 +119,17 @@ const Whiteboard = () => {
         
         <div className="flex gap-2">
           <Button 
+            variant={isChatOpen ? "default" : "outline"} 
+            className="group"
+            onClick={toggleChat}
+          >
+            <span className="flex items-center">
+              <MessageSquare className="mr-2 w-4 h-4" />
+              AI Assistant
+            </span>
+          </Button>
+          
+          <Button 
             variant="outline" 
             className="group"
             onClick={handleEvaluateDirectly}
@@ -136,8 +154,16 @@ const Whiteboard = () => {
         </div>
       </div>
       
-      <div className="bg-white border rounded-xl shadow-soft overflow-hidden h-[calc(100vh-240px)] min-h-[500px]">
-        <WhiteboardCanvas />
+      <div className="flex gap-4 h-[calc(100vh-240px)] min-h-[500px]">
+        <div className={`bg-white border rounded-xl shadow-soft overflow-hidden ${isChatOpen ? 'w-3/4' : 'w-full'} transition-all duration-300`}>
+          <WhiteboardCanvas />
+        </div>
+        
+        {isChatOpen && (
+          <div className="w-1/4 bg-white border rounded-xl shadow-soft overflow-hidden">
+            <AIChat challenge={currentChallenge} />
+          </div>
+        )}
       </div>
     </motion.div>
   );

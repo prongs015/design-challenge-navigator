@@ -1,6 +1,5 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -22,17 +21,19 @@ serve(async (req) => {
       throw new Error('Gemini API key is not configured');
     }
 
-    if (!message || !challenge) {
-      throw new Error('Missing required parameters: message or challenge');
+    if (!message) {
+      throw new Error('Missing required parameter: message');
     }
 
-    console.log("Processing chat assistant request for challenge:", challenge.title);
+    console.log("Processing chat assistant request for challenge:", challenge?.title || "Unknown challenge");
 
     // Convert the chat history to the format Gemini expects
-    const formattedHistory = history.map((msg: { role: string; content: string }) => ({
-      role: msg.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: msg.content }]
-    }));
+    const formattedHistory = history && history.length > 0 
+      ? history.map((msg) => ({
+          role: msg.role === 'assistant' ? 'model' : 'user',
+          parts: [{ text: msg.content }]
+        }))
+      : [];
 
     // Build a prompt for the AI to assist with whiteboarding
     const systemPrompt = {
@@ -41,11 +42,13 @@ serve(async (req) => {
         text: `
           You are an expert design mentor helping a user with a whiteboarding challenge.
           
+          ${challenge ? `
           Challenge details:
-          Title: ${challenge.title}
-          Company: ${challenge.company}
-          Description: ${challenge.description}
-          Requirements: ${JSON.stringify(challenge.requirements)}
+          Title: ${challenge.title || 'Untitled Challenge'}
+          Company: ${challenge.company || 'Unknown Company'}
+          Description: ${challenge.description || 'No description provided'}
+          Requirements: ${challenge.requirements ? JSON.stringify(challenge.requirements) : 'No specific requirements'}
+          ` : 'The user is working on a design challenge.'}
           
           Your role is to guide the user through their whiteboarding process. Be helpful, prompt them with 
           good questions, and offer constructive advice. Help them:
@@ -90,7 +93,7 @@ serve(async (req) => {
     const data = await response.json();
     
     if (!data.candidates || data.candidates.length === 0) {
-      console.error("Unexpected API response:", data);
+      console.error("Unexpected API response:", JSON.stringify(data));
       throw new Error('Failed to get response from AI');
     }
 

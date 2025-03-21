@@ -1,9 +1,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Avatar } from "@/components/ui/avatar";
 import { Textarea } from '@/components/ui/textarea';
+import { Avatar } from "@/components/ui/avatar";
 import { Send, Bot } from 'lucide-react';
 import { Challenge } from '@/context/ChallengeContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -82,7 +81,13 @@ const AIChat = ({ challenge }: { challenge: Challenge }) => {
       });
       
       if (error) {
-        throw new Error(error.message);
+        console.error('Error from chat-assistant function:', error);
+        throw new Error(error.message || 'Failed to get a response from the AI assistant');
+      }
+      
+      if (!data || !data.response) {
+        console.error('Invalid response from chat-assistant function:', data);
+        throw new Error('Invalid response from the AI assistant');
       }
       
       // Add AI response to chat

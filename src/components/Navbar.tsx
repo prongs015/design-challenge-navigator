@@ -31,15 +31,32 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link to="/" className="text-xl font-bold tracking-tight text-black">
-          WhiteboardAI
+          DesignChallenge
         </Link>
         
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-4">
+        <nav className="hidden md:flex items-center space-x-1">
           <Link to="/" className={`nav-link ${location.pathname === '/' ? 'font-medium' : ''}`}>
             Home
           </Link>
+          <Link to="/about" className={`nav-link ${location.pathname === '/about' ? 'font-medium' : ''}`}>
+            About us
+          </Link>
+          <Link to="/contact" className={`nav-link ${location.pathname === '/contact' ? 'font-medium' : ''}`}>
+            Contact us
+          </Link>
         </nav>
+        
+        <div className="hidden md:block">
+          <Button asChild className="btn-primary">
+            <Link to="/">Sign up</Link>
+          </Button>
+        </div>
+        
+        {/* Mobile Menu Button */}
+        <button className="md:hidden text-black" onClick={toggleMenu}>
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
       
       {/* Mobile Menu */}
@@ -49,6 +66,15 @@ const Navbar = () => {
             <Link to="/" className="nav-link py-3 border-b border-gray-100">
               Home
             </Link>
+            <Link to="/about" className="nav-link py-3 border-b border-gray-100">
+              About us
+            </Link>
+            <Link to="/contact" className="nav-link py-3 border-b border-gray-100">
+              Contact us
+            </Link>
+            <Button asChild className="btn-primary w-full mt-4">
+              <Link to="/">Sign up</Link>
+            </Button>
           </div>
         </div>
       )}

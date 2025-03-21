@@ -4,12 +4,20 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useChallengeContext } from '@/context/ChallengeContext';
 import WhiteboardCanvas from '@/components/WhiteboardCanvas';
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ChevronRight, Send, MessageSquare, Home } from 'lucide-react';
+import { 
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbSeparator,
+  BreadcrumbList,
+  BreadcrumbPage
+} from "@/components/ui/breadcrumb";
+import { ArrowLeft, ChevronRight, Send, Award, MessageSquare } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { toast } from "@/hooks/use-toast";
 import AIChat from '@/components/AIChat';
 
 const Whiteboard = () => {
-  const { challengeId } = useParams<{ challengeId: string }>();
+  const { companyId, challengeId } = useParams<{ companyId: string; challengeId: string }>();
   const navigate = useNavigate();
   const { getChallengeById, setCurrentChallenge, currentChallenge } = useChallengeContext();
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -32,7 +40,17 @@ const Whiteboard = () => {
   }, [challengeId, getChallengeById, setCurrentChallenge, navigate]);
   
   const handleSubmit = () => {
-    navigate(`/evaluation/${challengeId}`);
+    navigate(`/challenge/${companyId}/${challengeId}/submit`);
+  };
+
+  const handleEvaluateDirectly = () => {
+    // Here we'd capture the whiteboard state and send it for evaluation
+    // For now just navigate to submit page with a note
+    toast({
+      title: "Submit your solution first",
+      description: "Please submit your solution for Gemini AI evaluation",
+    });
+    navigate(`/challenge/${companyId}/${challengeId}/submit`);
   };
 
   const toggleChat = () => {
@@ -60,16 +78,40 @@ const Whiteboard = () => {
       transition={{ duration: 0.3 }}
       className="container mx-auto px-4 py-6"
     >
+      <div className="mb-6">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <Link to="/" className="underline hover:text-primary">Home</Link>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator>
+              <ChevronRight className="h-4 w-4" />
+            </BreadcrumbSeparator>
+            <BreadcrumbItem>
+              <Link to={`/challenge/${companyId}`} className="underline hover:text-primary">
+                {currentChallenge.company}
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator>
+              <ChevronRight className="h-4 w-4" />
+            </BreadcrumbSeparator>
+            <BreadcrumbItem>
+              <BreadcrumbPage>{currentChallenge.title}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
+      
       <div className="flex justify-between items-center mb-6">
         <div>
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate('/')}
+            onClick={() => navigate(`/challenge/${companyId}?id=${challengeId}`)}
             className="mb-2 group"
           >
             <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
-            Back to Challenges
+            Back to Challenge
           </Button>
           <h1 className="text-2xl font-bold gradient-text">{currentChallenge.title}</h1>
           <p className="text-gray-600">{currentChallenge.company} - Whiteboarding</p>
@@ -81,8 +123,21 @@ const Whiteboard = () => {
             className="group"
             onClick={toggleChat}
           >
-            <MessageSquare className="mr-2 w-4 h-4" />
-            AI Assistant
+            <span className="flex items-center">
+              <MessageSquare className="mr-2 w-4 h-4" />
+              AI Assistant
+            </span>
+          </Button>
+          
+          <Button 
+            variant="outline" 
+            className="group"
+            onClick={handleEvaluateDirectly}
+          >
+            <span className="flex items-center">
+              <Award className="mr-2 w-4 h-4" />
+              Evaluate with Gemini
+            </span>
           </Button>
           
           <Button 
@@ -92,7 +147,7 @@ const Whiteboard = () => {
             className="group"
           >
             <span className="flex items-center">
-              Submit for Evaluation
+              Submit Solution
               <Send className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </span>
           </Button>
@@ -109,17 +164,6 @@ const Whiteboard = () => {
             <AIChat challenge={currentChallenge} />
           </div>
         )}
-      </div>
-      
-      <div className="mt-6">
-        <div className="bg-white p-4 rounded-lg border shadow-sm">
-          <h2 className="text-lg font-semibold mb-2">Challenge Requirements</h2>
-          <ul className="list-disc pl-5 space-y-1">
-            {currentChallenge.requirements.map((req, index) => (
-              <li key={index} className="text-gray-700">{req}</li>
-            ))}
-          </ul>
-        </div>
       </div>
     </motion.div>
   );

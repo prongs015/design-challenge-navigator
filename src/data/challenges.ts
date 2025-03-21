@@ -34,7 +34,7 @@ export const challenges: Challenge[] = [
       'Consider the business implications of your solution, including driver retention and revenue impact',
       'Think about how your solution might scale globally across different markets',
       'Balance technical feasibility with ideal user experience',
-      'Consider how your solution fits into Uber's broader product strategy'
+      'Consider how your solution fits into Uber\'s broader product strategy'
     ]
   },
   {
@@ -66,10 +66,10 @@ export const challenges: Challenge[] = [
       'Consider localization needs for international travelers'
     ],
     leadGuidance: [
-      'Develop a strategy for how this redesign fits into Airbnb's broader trust and safety initiatives',
+      'Develop a strategy for how this redesign fits into Airbnb\'s broader trust and safety initiatives',
       'Consider measurement frameworks to evaluate success',
       'Think about how this might impact host operations and experience',
-      'Balance immediate user needs with Airbnb's long-term business goals'
+      'Balance immediate user needs with Airbnb\'s long-term business goals'
     ]
   },
   {
@@ -87,7 +87,7 @@ export const challenges: Challenge[] = [
       'Improve content organization and discoverability',
       'Design for both active participants and passive consumers',
       'Consider privacy and content moderation aspects',
-      'Work within Meta's design system while proposing meaningful innovations'
+      'Work within Meta\'s design system while proposing meaningful innovations'
     ],
     juniorGuidance: [
       'Focus on improving the existing interface for content organization',
@@ -101,7 +101,7 @@ export const challenges: Challenge[] = [
       'Think about content lifecycles within different types of groups'
     ],
     leadGuidance: [
-      'Consider how your solution addresses Meta's broader goals for community building',
+      'Consider how your solution addresses Meta\'s broader goals for community building',
       'Think about the implementation complexity and potential phased rollout approaches',
       'Address potential misuse scenarios and content moderation challenges',
       'Consider how to measure success both for users and for the business'
@@ -118,15 +118,15 @@ export const challenges: Challenge[] = [
     tags: ['Music', 'Social', 'Discovery'],
     scenario: 'Spotify wants to enhance its social features to improve music discovery. Research shows that recommendations from friends are highly valued but underutilized in the current app. Your task is to design a social music discovery experience that helps users find new music through their social connections.',
     requirements: [
-      'Integrate naturally with Spotify's existing social features',
+      'Integrate naturally with Spotify\'s existing social features',
       'Design for both active sharers and passive consumers',
       'Consider privacy implications and user control',
-      'Maintain Spotify's focus on music discovery',
+      'Maintain Spotify\'s focus on music discovery',
       'Design primarily for the mobile app experience'
     ],
     juniorGuidance: [
-      'Focus on improving visibility of friends' listening activity',
-      'Consider simple sharing mechanisms that don't disrupt the listening experience',
+      'Focus on improving visibility of friends\' listening activity',
+      'Consider simple sharing mechanisms that don\'t disrupt the listening experience',
       'Think about how to display social recommendations in the UI'
     ],
     seniorGuidance: [
@@ -136,10 +136,10 @@ export const challenges: Challenge[] = [
       'Think about potential integration with existing features like playlists and radio'
     ],
     leadGuidance: [
-      'Develop a vision for how social features could evolve within Spotify's ecosystem',
+      'Develop a vision for how social features could evolve within Spotify\'s ecosystem',
       'Consider business implications like user growth and retention',
       'Think about potential partnerships or integrations with other platforms',
-      'Address how this feature might affect Spotify's core metrics and user engagement'
+      'Address how this feature might affect Spotify\'s core metrics and user engagement'
     ]
   },
   {
@@ -171,10 +171,10 @@ export const challenges: Challenge[] = [
       'Think about user control and transparency in this connected experience'
     ],
     leadGuidance: [
-      'Consider how this feature supports Google's broader ecosystem strategy',
+      'Consider how this feature supports Google\'s broader ecosystem strategy',
       'Address potential technical and privacy constraints in your solution',
       'Think about metrics for measuring success across devices',
-      'Consider implications for Google's business model and user engagement'
+      'Consider implications for Google\'s business model and user engagement'
     ]
   }
 ];

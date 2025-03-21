@@ -1,25 +1,26 @@
-
 import { useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useChallengeContext } from '@/context/ChallengeContext';
 import SubmissionForm from '@/components/SubmissionForm';
 import { Button } from "@/components/ui/button";
-import { 
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbSeparator,
-  BreadcrumbList,
-  BreadcrumbPage
-} from "@/components/ui/breadcrumb";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbSeparator, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { ArrowLeft, ChevronRight } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from 'framer-motion';
-
 const Submit = () => {
-  const { companyId, challengeId } = useParams<{ companyId: string; challengeId: string }>();
+  const {
+    companyId,
+    challengeId
+  } = useParams<{
+    companyId: string;
+    challengeId: string;
+  }>();
   const navigate = useNavigate();
-  const { getChallengeById, setCurrentChallenge, currentChallenge } = useChallengeContext();
-  
+  const {
+    getChallengeById,
+    setCurrentChallenge,
+    currentChallenge
+  } = useChallengeContext();
   useEffect(() => {
     if (challengeId) {
       const challenge = getChallengeById(challengeId);
@@ -30,38 +31,34 @@ const Submit = () => {
         navigate('/');
       }
     }
-    
     return () => {
       // Clean up when component unmounts
       setCurrentChallenge(null);
     };
   }, [challengeId, getChallengeById, setCurrentChallenge, navigate]);
-  
   const handleComplete = () => {
     navigate('/progress');
   };
-
   if (!currentChallenge) {
-    return (
-      <div className="container mx-auto px-4 py-12 text-center">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
+    return <div className="container mx-auto px-4 py-12 text-center">
+        <motion.div initial={{
+        opacity: 0
+      }} animate={{
+        opacity: 1
+      }} transition={{
+        duration: 0.5
+      }}>
           <p className="text-lg">Loading challenge...</p>
         </motion.div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
-      className="container mx-auto px-4 py-6"
-    >
+  return <motion.div initial={{
+    opacity: 0
+  }} animate={{
+    opacity: 1
+  }} transition={{
+    duration: 0.3
+  }} className="container mx-auto px-4 py-6">
       <div className="mb-6">
         <Breadcrumb>
           <BreadcrumbList>
@@ -96,12 +93,7 @@ const Submit = () => {
       
       <div className="flex justify-between items-center mb-6">
         <div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate(`/challenge/${companyId}/${challengeId}/whiteboard`)}
-            className="mb-2 group"
-          >
+          <Button variant="ghost" size="sm" onClick={() => navigate(`/challenge/${companyId}/${challengeId}/whiteboard`)} className="mb-2 group">
             <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
             Back to Whiteboard
           </Button>
@@ -112,46 +104,15 @@ const Submit = () => {
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
         <div className="lg:col-span-2">
-          <SubmissionForm 
-            challengeId={challengeId || ''} 
-            onComplete={handleComplete} 
-          />
+          <SubmissionForm challengeId={challengeId || ''} onComplete={handleComplete} />
         </div>
         
         <div className="lg:col-span-1">
           <Card gradient={true} className="animate-fadeIn">
-            <CardContent className="p-6 space-y-6">
-              <div>
-                <h3 className="text-lg font-medium mb-2 gradient-text">Challenge Summary</h3>
-                <p className="text-sm text-gray-600">{currentChallenge.description}</p>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-medium mb-2 gradient-text">Key Requirements</h3>
-                <ul className="list-disc pl-5 space-y-1">
-                  {currentChallenge.requirements.map((req, index) => (
-                    <li key={index} className="text-sm text-gray-600">{req}</li>
-                  ))}
-                </ul>
-              </div>
-              
-              <div className="pt-4 border-t">
-                <h3 className="text-lg font-medium mb-2 gradient-text">What's Next?</h3>
-                <p className="text-sm text-gray-600 mb-2">
-                  After submission, your challenge will be recorded and you can:
-                </p>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li className="text-sm text-gray-600">Review your completed challenges</li>
-                  <li className="text-sm text-gray-600">Track your progress over time</li>
-                  <li className="text-sm text-gray-600">Share with peers for feedback</li>
-                </ul>
-              </div>
-            </CardContent>
+            
           </Card>
         </div>
       </div>
-    </motion.div>
-  );
+    </motion.div>;
 };
-
 export default Submit;

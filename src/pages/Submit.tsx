@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { 
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbSeparator,
   BreadcrumbList,
   BreadcrumbPage
@@ -55,23 +54,23 @@ const Submit = () => {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink as={Link} to="/">Home</BreadcrumbLink>
+              <Link to="/" className="underline hover:text-primary">Home</Link>
             </BreadcrumbItem>
             <BreadcrumbSeparator>
               <ChevronRight className="h-4 w-4" />
             </BreadcrumbSeparator>
             <BreadcrumbItem>
-              <BreadcrumbLink as={Link} to={`/challenge/${companyId}`}>
+              <Link to={`/challenge/${companyId}`} className="underline hover:text-primary">
                 {currentChallenge.company}
-              </BreadcrumbLink>
+              </Link>
             </BreadcrumbItem>
             <BreadcrumbSeparator>
               <ChevronRight className="h-4 w-4" />
             </BreadcrumbSeparator>
             <BreadcrumbItem>
-              <BreadcrumbLink as={Link} to={`/challenge/${companyId}?id=${challengeId}`}>
+              <Link to={`/challenge/${companyId}?id=${challengeId}`} className="underline hover:text-primary">
                 {currentChallenge.title}
-              </BreadcrumbLink>
+              </Link>
             </BreadcrumbItem>
             <BreadcrumbSeparator>
               <ChevronRight className="h-4 w-4" />

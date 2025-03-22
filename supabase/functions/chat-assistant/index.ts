@@ -61,7 +61,7 @@ serve(async (req) => {
 
     // Build a prompt for the AI to assist with whiteboarding
     const systemPrompt = {
-      role: "system",
+      role: "model",
       parts: [{ 
         text: `
           You are an expert design mentor helping a user with a whiteboarding challenge.
